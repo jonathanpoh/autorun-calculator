@@ -2,13 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Autorun Frame Calculator</title>
+
+  <meta name="theme-color" content="#f2f4f7">
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('nightVision') === 'on') {
+          document.documentElement.setAttribute('data-theme', 'night');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000000');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Autorun">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
   <main class="calculator">
-    <h1 class="calculator__title">Autorun Frame Calculator</h1>
+    <div class="calculator__header">
+      <h1 class="calculator__title">Autorun Frame Calculator</h1>
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false">Night Vision</button>
+    </div>
     <p class="calculator__subtitle">Plan how many sub-frames an imaging session will produce.</p>
 
     <form class="calculator__form">
@@ -62,5 +85,7 @@
 
   <script src="calculator-core.js"></script>
   <script src="app.js"></script>
+  <script src="theme.js"></script>
+  <script src="sw-register.js"></script>
 </body>
 </html>
