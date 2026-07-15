@@ -1,4 +1,4 @@
-function clampBuffer(value) {
+function clampOverhead(value) {
   const n = Number(value);
   if (Number.isNaN(n)) return 0;
   return Math.min(99, Math.max(0, n));
@@ -14,20 +14,20 @@ function formatDuration(totalSeconds) {
   return `${minutes}m`;
 }
 
-function calculateFrames({ duration, unit, bufferPercent, exposureSeconds }) {
+function calculateFrames({ duration, unit, overheadPercent, exposureSeconds }) {
   const safeDuration = Math.max(0, Number(duration) || 0);
-  const safeBuffer = clampBuffer(bufferPercent);
+  const safeOverhead = clampOverhead(overheadPercent);
   const safeExposure = Math.max(0, Number(exposureSeconds) || 0);
 
   const durationSeconds = safeDuration * (unit === 'hours' ? 3600 : 60);
-  const usableSeconds = durationSeconds * (1 - safeBuffer / 100);
+  const usableSeconds = durationSeconds * (1 - safeOverhead / 100);
   const frames = safeExposure > 0 ? Math.ceil(usableSeconds / safeExposure) : 0;
   const actualCaptureSeconds = frames * safeExposure;
-  const bufferSeconds = durationSeconds - usableSeconds;
+  const overheadSeconds = durationSeconds - usableSeconds;
 
-  return { frames, durationSeconds, usableSeconds, bufferSeconds, actualCaptureSeconds };
+  return { frames, durationSeconds, usableSeconds, overheadSeconds, actualCaptureSeconds };
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { calculateFrames, clampBuffer, formatDuration };
+  module.exports = { calculateFrames, clampOverhead, formatDuration };
 }
