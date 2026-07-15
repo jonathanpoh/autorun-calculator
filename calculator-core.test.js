@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { calculateFrames, clampOverhead, formatDuration } = require('./calculator-core.js');
+const { calculateFrames, clampOverhead, formatDuration } = require('./dist/calculator-core.js');
 
 test('clampOverhead keeps values within 0-99', () => {
   assert.equal(clampOverhead(15), 15);
