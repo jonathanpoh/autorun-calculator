@@ -4,6 +4,16 @@ function clampBuffer(value) {
   return Math.min(99, Math.max(0, n));
 }
 
+function formatDuration(totalSeconds) {
+  const totalMinutes = Math.round(totalSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours > 0 && minutes > 0) return `${hours}h ${minutes}m`;
+  if (hours > 0) return `${hours}h`;
+  return `${minutes}m`;
+}
+
 function calculateFrames({ duration, unit, bufferPercent, exposureSeconds }) {
   const safeDuration = Math.max(0, Number(duration) || 0);
   const safeBuffer = clampBuffer(bufferPercent);
@@ -19,5 +29,5 @@ function calculateFrames({ duration, unit, bufferPercent, exposureSeconds }) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { calculateFrames, clampBuffer };
+  module.exports = { calculateFrames, clampBuffer, formatDuration };
 }
