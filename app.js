@@ -40,10 +40,6 @@
       updateExposureVisibility();
       recalculate();
     });
-    el.addEventListener('change', () => {
-      updateExposureVisibility();
-      recalculate();
-    });
   });
 
   updateExposureVisibility();
