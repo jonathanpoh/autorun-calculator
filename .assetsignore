@@ -1,0 +1,11 @@
+.git
+.gitignore
+.claude
+.superpowers
+.wrangler
+docs
+wrangler.toml
+.assetsignore
+README.md
+CLAUDE.md
+calculator-core.test.js
