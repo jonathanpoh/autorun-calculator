@@ -56,3 +56,15 @@ python3 -m http.server 8000
 ```
 
 then open `http://localhost:8000/`.
+
+## Deployment
+
+Deployed as a static site to Cloudflare Pages — no build command, output
+directory is the repo root. `wrangler.toml` pins the project name and
+output dir for the Wrangler CLI:
+
+```
+wrangler pages deploy
+```
+
+(or `wrangler pages dev` for a local preview through Cloudflare's runtime).
