@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autorun Frame Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="calculator">
+    <h1 class="calculator__title">Autorun Frame Calculator</h1>
+    <p class="calculator__subtitle">Plan how many sub-frames an imaging session will produce.</p>
+
+    <form class="calculator__form">
+      <div class="field-group">
+        <label for="duration">Session duration</label>
+        <div class="field-group__row">
+          <input type="number" id="duration" min="0" step="0.1" value="4" inputmode="decimal">
+          <select id="duration-unit">
+            <option value="hours" selected>Hours</option>
+            <option value="minutes">Minutes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="buffer">Buffer / waste %</label>
+        <input type="number" id="buffer" min="0" max="99" step="1" value="15" inputmode="decimal">
+      </div>
+
+      <div class="field-group">
+        <label for="exposure">Exposure time</label>
+        <select id="exposure">
+          <option value="60">60s</option>
+          <option value="120">120s</option>
+          <option value="180">180s</option>
+          <option value="300" selected>300s</option>
+          <option value="other">Other</option>
+        </select>
+        <input type="number" id="exposure-custom" min="1" step="1" placeholder="Seconds" class="field-group__custom" hidden>
+      </div>
+    </form>
+
+    <section class="result" aria-live="polite">
+      <p class="result__headline"><span id="frame-count">0</span> frames</p>
+      <dl class="result__breakdown">
+        <div class="result__row">
+          <dt>Usable imaging time</dt>
+          <dd id="usable-time">0m</dd>
+        </div>
+        <div class="result__row">
+          <dt>Time lost to buffer</dt>
+          <dd id="buffer-time">0m</dd>
+        </div>
+        <div class="result__row">
+          <dt>Actual total capture time</dt>
+          <dd id="capture-time">0m</dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <script src="calculator-core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
