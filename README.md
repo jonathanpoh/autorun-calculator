@@ -63,9 +63,13 @@ then open `http://localhost:8000/`.
 
 ## Deployment
 
-Deployed as a static site to Cloudflare (Workers/Pages) — no build
-command, output directory is `dist/`. `wrangler.toml` pins the project
-name and output dir for the Wrangler CLI:
+Deployed as a static-assets Worker to Cloudflare. Pushing to `main`
+triggers a Workers Build, which runs `npx wrangler deploy` on
+Cloudflare's infrastructure — there is no build command, and no need to
+deploy by hand. `wrangler.toml` pins the Worker name and points
+`[assets]` at `dist/` as the directory to upload.
+
+To deploy manually (same command the build runs):
 
 ```
 npx wrangler deploy
@@ -73,5 +77,4 @@ npx wrangler deploy
 
 Everything outside `dist/` (git history, docs, tests, config) is
 physically excluded just by not being in that folder — no reliance on
-`.gitignore`/`.assetsignore` pattern-matching working correctly across
-whichever Cloudflare build/deploy code path ends up running.
+`.gitignore` pattern-matching working correctly.
