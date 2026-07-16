@@ -43,4 +43,57 @@
   syncThemeColorMeta();
 
   darkModeQuery.addEventListener('change', syncThemeColorMeta);
+
+  // Auto night vision: enable from the start of astronomical twilight
+  // through to the end of astronomical twilight the next morning. Requires
+  // geolocation; if permission is denied or unavailable, this silently
+  // no-ops and the toggle above stays fully manual.
+  const AUTO_CHECK_INTERVAL_MS = 60 * 1000;
+  let coords = loadCachedCoords();
+  let lastComputedNight = null;
+
+  function loadCachedCoords() {
+    try {
+      const lat = localStorage.getItem('astroLat');
+      const lon = localStorage.getItem('astroLon');
+      return lat !== null && lon !== null ? { lat: Number(lat), lon: Number(lon) } : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function cacheCoords(lat, lon) {
+    try {
+      localStorage.setItem('astroLat', String(lat));
+      localStorage.setItem('astroLon', String(lon));
+    } catch (e) {}
+  }
+
+  function applyAutoNightVision() {
+    if (!coords || typeof window.Twilight === 'undefined') return;
+    const computed = window.Twilight.isAstronomicalNight(new Date(), coords.lat, coords.lon);
+    // Only force a change when the astro state itself has flipped (a real
+    // dusk/dawn transition), not just because it differs from whatever the
+    // manual toggle currently shows - that would fight the manual override.
+    if (lastComputedNight === null || computed !== lastComputedNight) {
+      lastComputedNight = computed;
+      setNightVision(computed);
+    }
+  }
+
+  if (coords) applyAutoNightVision();
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        coords = { lat: position.coords.latitude, lon: position.coords.longitude };
+        cacheCoords(coords.lat, coords.lon);
+        applyAutoNightVision();
+      },
+      () => {},
+      { maximumAge: 60 * 60 * 1000 }
+    );
+  }
+
+  setInterval(applyAutoNightVision, AUTO_CHECK_INTERVAL_MS);
 })();

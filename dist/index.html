@@ -6,10 +6,16 @@
   <title>Autorun Frame Calculator</title>
 
   <meta name="theme-color" content="#f2f4f7">
+  <script src="twilight.js"></script>
   <script>
     (function () {
       try {
-        if (localStorage.getItem('nightVision') === 'on') {
+        const lat = localStorage.getItem('astroLat');
+        const lon = localStorage.getItem('astroLon');
+        const isNight = lat !== null && lon !== null && window.Twilight
+          ? window.Twilight.isAstronomicalNight(new Date(), Number(lat), Number(lon))
+          : localStorage.getItem('nightVision') === 'on';
+        if (isNight) {
           document.documentElement.setAttribute('data-theme', 'night');
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000000');
         }

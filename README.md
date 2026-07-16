@@ -17,8 +17,11 @@ tells you how many sub-frames the session will actually produce.
   and actual total capture time
 - Installable as an offline-capable PWA — add it to your iOS home screen
   and use it with no signal at a dark site
-- Manual "Night Vision" mode (dim red-on-black) to preserve dark
-  adaptation in the field, independent of the device's system theme
+- "Night Vision" mode (dim red-on-black) to preserve dark adaptation in
+  the field, independent of the device's system theme. Toggles manually,
+  and also switches on automatically from the start of astronomical
+  twilight through to the end of astronomical twilight the next morning
+  (needs geolocation permission; falls back to manual-only if denied)
 
 ## Usage
 
@@ -39,17 +42,18 @@ only the actual site ever gets uploaded to Cloudflare.
 |---|---|
 | `dist/index.html` / `dist/styles.css` | Markup and hand-rolled semantic CSS (no framework) |
 | `dist/calculator-core.js` | Pure calculation logic (frame count, overhead, duration formatting) |
-| `dist/app.js` | Wires the form inputs to `calculator-core.js` and updates the results live |
-| `dist/theme.js` | Night Vision toggle, persisted via `localStorage` |
+| `dist/app.js` | Wires the form inputs to `calculator-core.js` and updates the results live, converts the duration value when the hours/minutes unit is switched |
+| `dist/theme.js` | Night Vision toggle (manual + automatic via `twilight.js`), persisted via `localStorage` |
+| `dist/twilight.js` | Pure astronomical twilight calculation (sun at -12deg altitude), no dependencies |
 | `dist/manifest.json` / `dist/sw.js` / `dist/sw-register.js` | PWA install + offline caching |
 | `dist/icons/` | App icon source (`icon.svg`) and generated PNGs |
 | `calculator-core.test.js` | Tests for `dist/calculator-core.js`, kept at repo root (not deployed) |
+| `twilight.test.js` | Tests for `dist/twilight.js`, kept at repo root (not deployed) |
 
-Run the calculation logic tests (Node's built-in test runner, no
-dependencies needed):
+Run the tests (Node's built-in test runner, no dependencies needed):
 
 ```
-node --test calculator-core.test.js
+node --test calculator-core.test.js twilight.test.js
 ```
 
 Service Workers require http(s) rather than `file://`, so to test PWA/

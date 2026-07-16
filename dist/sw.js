@@ -1,8 +1,8 @@
-const CACHE_NAME = 'autorun-calculator-v2'; // bump this string on future deploys to bust old caches
+const CACHE_NAME = 'autorun-calculator-v3'; // bump this string on future deploys to bust old caches
 
 const APP_SHELL = [
   './', './index.html', './styles.css',
-  './calculator-core.js', './app.js', './theme.js', './sw-register.js',
+  './calculator-core.js', './app.js', './theme.js', './twilight.js', './sw-register.js',
   './manifest.json',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png',
 ];

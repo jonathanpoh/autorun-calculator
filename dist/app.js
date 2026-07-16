@@ -21,6 +21,17 @@
     exposureCustomInput.hidden = exposureSelect.value !== 'other';
   }
 
+  let previousUnit = unitSelect.value;
+
+  function convertDurationValue(fromUnit, toUnit) {
+    if (fromUnit === toUnit) return;
+    const raw = Number(durationInput.value);
+    if (!Number.isFinite(raw)) return;
+    const seconds = raw * (fromUnit === 'hours' ? 3600 : 60);
+    const converted = seconds / (toUnit === 'hours' ? 3600 : 60);
+    durationInput.value = Math.round(converted * 100) / 100;
+  }
+
   function recalculate() {
     const result = calculateFrames({
       duration: durationInput.value,
@@ -35,7 +46,14 @@
     captureTimeEl.textContent = formatDuration(result.actualCaptureSeconds);
   }
 
-  [durationInput, unitSelect, overheadInput, exposureSelect, exposureCustomInput].forEach((el) => {
+  unitSelect.addEventListener('change', () => {
+    convertDurationValue(previousUnit, unitSelect.value);
+    previousUnit = unitSelect.value;
+    updateExposureVisibility();
+    recalculate();
+  });
+
+  [durationInput, overheadInput, exposureSelect, exposureCustomInput].forEach((el) => {
     el.addEventListener('input', () => {
       updateExposureVisibility();
       recalculate();
