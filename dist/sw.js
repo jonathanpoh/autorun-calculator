@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autorun-calculator-v1'; // bump this string on future deploys to bust old caches
+const CACHE_NAME = 'autorun-calculator-v2'; // bump this string on future deploys to bust old caches
 
 const APP_SHELL = [
   './', './index.html', './styles.css',
